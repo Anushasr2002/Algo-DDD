@@ -1,0 +1,57 @@
+﻿# IDE
+.vs/
+.idea/
+*.user
+*.suo
+*.swp
+.DS_Store
+
+# Build outputs
+bin/
+obj/
+dist/
+out/
+*.dll
+*.exe
+*.pdb
+
+# Dependencies
+packages/
+node_modules/
+jspm_packages/
+
+# Configs
+appsettings.Development.json
+appsettings.Production.json
+*.secret
+.env
+secrets.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing
+TestResults/
+.coverage
+*.trx
+
+# Runtime
+temp/
+tmp/
+*.tmp
+
+# Docker
+docker/volumes/
+*.pid
+
+# NuGet
+*.nupkg
+project.lock.json
+
+# Python (for ML models)
+__pycache__/
+*.pyc
+env/
+venv/
