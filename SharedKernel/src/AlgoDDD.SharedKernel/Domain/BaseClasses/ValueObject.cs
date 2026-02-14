@@ -1,4 +1,8 @@
-﻿namespace AlgoDDD.SharedKernel.Domain.BaseClasses;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AlgoDDD.SharedKernel.Domain.BaseClasses;
 
 public abstract class ValueObject
 {

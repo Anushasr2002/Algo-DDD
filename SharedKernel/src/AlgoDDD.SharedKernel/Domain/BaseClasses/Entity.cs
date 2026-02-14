@@ -1,4 +1,6 @@
-﻿namespace AlgoDDD.SharedKernel.Domain.BaseClasses;
+﻿using System;
+
+namespace AlgoDDD.SharedKernel.Domain.BaseClasses;
 
 public abstract class Entity<TId> where TId : notnull
 {
@@ -9,7 +11,7 @@ public abstract class Entity<TId> where TId : notnull
         Id = id;
     }
     
-    protected Entity() { } // For EF Core
+    protected Entity() { }
     
     public override bool Equals(object? obj)
     {
@@ -22,10 +24,10 @@ public abstract class Entity<TId> where TId : notnull
         if (GetType() != other.GetType())
             return false;
             
-        return Id.Equals(other.Id);
+        return Id!.Equals(other.Id);
     }
     
-    public override int GetHashCode() => Id.GetHashCode();
+    public override int GetHashCode() => Id!.GetHashCode();
     
     public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
         => Equals(left, right);

@@ -1,4 +1,6 @@
-﻿using AlgoDDD.SharedKernel.Domain.Events;
+﻿using System;
+using System.Collections.Generic;
+using AlgoDDD.SharedKernel.Domain.Events;
 
 namespace AlgoDDD.SharedKernel.Domain.BaseClasses;
 
