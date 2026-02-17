@@ -1,7 +1,6 @@
 using static AlgoDDD.SharedKernel.DomainEvents;
 using System;
 using AlgoDDD.SharedKernel.Domain;
-using AlgoDDD.SharedKernel.Domain.BaseClasses;
 
 namespace AlgoDDD.Strategy.Domain.Events
 {

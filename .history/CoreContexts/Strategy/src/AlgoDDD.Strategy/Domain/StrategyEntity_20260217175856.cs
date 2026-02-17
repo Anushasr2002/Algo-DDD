@@ -5,6 +5,7 @@ using AlgoDDD.SharedKernel.Domain.Events;
 using AlgoDDD.Strategy.Domain.Events;
 using AlgoDDD.MarketData.Domain.Entities;
 
+
 namespace AlgoDDD.Strategy.Domain
 {
     /// <summary>

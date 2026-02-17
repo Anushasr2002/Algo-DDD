@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AlgoDDD.SharedKernel.Domain.BaseClasses;
 
+
 namespace AlgoDDD.SharedKernel
 {
     /// <summary>

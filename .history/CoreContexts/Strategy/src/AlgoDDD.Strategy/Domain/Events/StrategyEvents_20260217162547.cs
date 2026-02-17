@@ -3,6 +3,7 @@ using System;
 using AlgoDDD.SharedKernel.Domain;
 using AlgoDDD.SharedKernel.Domain.BaseClasses;
 
+
 namespace AlgoDDD.Strategy.Domain.Events
 {
     public class StrategyCreatedEvent : DomainEvent
