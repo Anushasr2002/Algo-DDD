@@ -10,7 +10,7 @@ using AlgoDDD.Strategy.Domain.Events;
 namespace AlgoDDD.Strategy.Domain
 {
     // Renamed from Strategy to StrategyEntity to avoid namespace conflict
-    public class StrategyEntity : AggregateRoot<Guid>
+    public class StrategyEntity : AggregateRoot
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
@@ -20,7 +20,11 @@ namespace AlgoDDD.Strategy.Domain
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? LastExecutedAt { get; private set; }
-        
+        public class StrategyEntity : AggregateRoot<string>
+{
+    // properties and methods
+}
+
 
         // For EF Core
         private StrategyEntity() { }

@@ -10,7 +10,7 @@ using AlgoDDD.Strategy.Domain.Events;
 namespace AlgoDDD.Strategy.Domain
 {
     // Renamed from Strategy to StrategyEntity to avoid namespace conflict
-    public class StrategyEntity : AggregateRoot<Guid>
+    public class StrategyEntity : AggregateRoot
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
