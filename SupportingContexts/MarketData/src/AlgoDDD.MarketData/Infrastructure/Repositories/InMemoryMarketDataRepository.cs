@@ -8,8 +8,8 @@ namespace AlgoDDD.MarketData.Infrastructure.Repositories;
 
 public class InMemoryMarketDataRepository : IMarketDataRepository
 {
-    private readonly ConcurrentDictionary<string, MarketData> _latestData = new();
-    private readonly ConcurrentDictionary<string, List<MarketData>> _history = new();
+    private readonly ConcurrentDictionary<string, StockData> _latestData = new();
+    private readonly ConcurrentDictionary<string, List<StockData>> _history = new();
     private readonly IMemoryCache _cache;
     private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(5);
 
@@ -18,20 +18,17 @@ public class InMemoryMarketDataRepository : IMarketDataRepository
         _cache = cache;
     }
 
-    public Task<MarketData?> GetLatestBySymbolAsync(StockSymbol symbol)
+    public Task<StockData?> GetLatestBySymbolAsync(StockSymbol symbol)
     {
         var key = symbol.ToString();
         
-        // Try cache first
-        if (_cache.TryGetValue<MarketData>(key, out var cachedData))
+        if (_cache.TryGetValue<StockData>(key, out var cachedData))
         {
             return Task.FromResult(cachedData);
         }
         
-        // Then check dictionary
         _latestData.TryGetValue(key, out var data);
         
-        // Add to cache if found
         if (data != null)
         {
             _cache.Set(key, data, _cacheDuration);
@@ -40,35 +37,31 @@ public class InMemoryMarketDataRepository : IMarketDataRepository
         return Task.FromResult(data);
     }
 
-    public Task<IEnumerable<MarketData>> GetHistoryBySymbolAsync(StockSymbol symbol, DateTime from, DateTime to)
+    public Task<IEnumerable<StockData>> GetHistoryBySymbolAsync(StockSymbol symbol, DateTime from, DateTime to)
     {
         var key = symbol.ToString();
         
         if (_history.TryGetValue(key, out var history))
         {
             var filtered = history.Where(x => x.Timestamp >= from && x.Timestamp <= to)
-                                  .OrderByDescending(x => x.Timestamp);
+                                  .OrderByDescending(x => x.Timestamp)
+                                  .AsEnumerable();
             return Task.FromResult(filtered);
         }
         
-        return Task.FromResult(Enumerable.Empty<MarketData>());
+        return Task.FromResult(Enumerable.Empty<StockData>());
     }
 
-    public Task AddAsync(MarketData marketData)
+    public Task AddAsync(StockData stockData)
     {
-        var key = marketData.Symbol.ToString();
+        var key = stockData.Symbol.ToString();
         
-        // Update latest data
-        _latestData.AddOrUpdate(key, marketData, (_, _) => marketData);
+        _latestData.AddOrUpdate(key, stockData, (_, _) => stockData);
+        _cache.Set(key, stockData, _cacheDuration);
         
-        // Add to cache
-        _cache.Set(key, marketData, _cacheDuration);
+        var history = _history.GetOrAdd(key, _ => new List<StockData>());
+        history.Add(stockData);
         
-        // Add to history
-        var history = _history.GetOrAdd(key, _ => new List<MarketData>());
-        history.Add(marketData);
-        
-        // Keep only last 100 records per symbol
         if (history.Count > 100)
         {
             history.RemoveRange(0, history.Count - 100);
@@ -77,9 +70,9 @@ public class InMemoryMarketDataRepository : IMarketDataRepository
         return Task.CompletedTask;
     }
 
-    public Task UpdateAsync(MarketData marketData)
+    public Task UpdateAsync(StockData stockData)
     {
-        return AddAsync(marketData); // Same logic for update
+        return AddAsync(stockData);
     }
 
     public Task DeleteAsync(string id)

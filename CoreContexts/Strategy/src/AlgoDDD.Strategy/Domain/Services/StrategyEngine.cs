@@ -1,3 +1,4 @@
+using AlgoDDD.Strategy.Domain;
 using AlgoDDD.Strategy.Domain.Aggregates;
 using AlgoDDD.Strategy.Domain.Entities;
 using AlgoDDD.Strategy.Domain.Interfaces;
@@ -24,20 +25,20 @@ public class StrategyEngine
         var signals = new List<Signal>();
         var activeStrategies = await _strategyRepository.GetActiveStrategiesAsync();
 
-        foreach (var strategy in activeStrategies)
+        foreach (var StrategyEntity in activeStrategies)
         {
-            var strategySignals = await ExecuteStrategyAsync(strategy);
+            var strategySignals = await ExecuteStrategyAsync(StrategyEntity);
             signals.AddRange(strategySignals);
         }
 
         return signals;
     }
 
-    public async Task<List<Signal>> ExecuteStrategyAsync(Strategy strategy)
+    public async Task<List<Signal>> ExecuteStrategyAsync(StrategyEntity StrategyEntity)
     {
         var signals = new List<Signal>();
 
-        foreach (var symbol in strategy.Symbols)
+        foreach (var symbol in StrategyEntity.Symbols)
         {
             var stockSymbol = new StockSymbol(symbol, "NASDAQ", "USD");
             var marketData = await _marketDataService.GetLatestMarketDataAsync(stockSymbol);
@@ -45,7 +46,7 @@ public class StrategyEngine
 
             if (marketData != null && historicalData.Any())
             {
-                var signal = strategy.GenerateSignal(
+                var signal = StrategyEntity.GenerateSignal(
                     stockSymbol,
                     marketData.CurrentPrice.Value,
                     historicalData.ToList()
@@ -63,14 +64,14 @@ public class StrategyEngine
     }
 
     public async Task<BacktestResult> BacktestStrategyAsync(
-        Strategy strategy,
+        StrategyEntity StrategyEntity,
         DateTime startDate,
         DateTime endDate,
         decimal initialCapital)
     {
         var result = new BacktestResult
         {
-            StrategyName = strategy.Name,
+            StrategyName = StrategyEntity.Name,
             StartDate = startDate,
             EndDate = endDate,
             InitialCapital = initialCapital
@@ -82,7 +83,7 @@ public class StrategyEngine
 
         // Get historical data for all symbols
         var historicalData = new Dictionary<string, List<MarketData>>();
-        foreach (var symbol in strategy.Symbols)
+        foreach (var symbol in StrategyEntity.Symbols)
         {
             var stockSymbol = new StockSymbol(symbol, "NASDAQ", "USD");
             var data = await _marketDataService.GetHistoricalDataAsync(stockSymbol, 500);
@@ -92,7 +93,7 @@ public class StrategyEngine
         // Simulate trading day by day
         for (var date = startDate; date <= endDate; date = date.AddDays(1))
         {
-            foreach (var symbol in strategy.Symbols)
+            foreach (var symbol in StrategyEntity.Symbols)
             {
                 var symbolData = historicalData[symbol]
                     .Where(d => d.Timestamp.Date == date)
@@ -109,7 +110,7 @@ public class StrategyEngine
                     .Where(d => d.Timestamp <= date)
                     .ToList();
 
-                var signal = strategy.GenerateSignal(stockSymbol, currentPrice, historicalUpToDate);
+                var signal = StrategyEntity.GenerateSignal(stockSymbol, currentPrice, historicalUpToDate);
 
                 if (signal != null)
                 {
@@ -131,7 +132,7 @@ public class StrategyEngine
         }
 
         // Close all positions at end date
-        foreach (var symbol in strategy.Symbols)
+        foreach (var symbol in StrategyEntity.Symbols)
         {
             var lastData = historicalData[symbol].Last();
             currentCapital += currentPosition * lastData.CurrentPrice.Value;
@@ -165,3 +166,4 @@ public class BacktestResult
     public decimal WinRate => TotalSignals > 0 ? (decimal)WinningTrades / TotalSignals * 100 : 0;
     public decimal ProfitFactor => LosingTrades > 0 ? (decimal)WinningTrades / LosingTrades : 0;
 }
+

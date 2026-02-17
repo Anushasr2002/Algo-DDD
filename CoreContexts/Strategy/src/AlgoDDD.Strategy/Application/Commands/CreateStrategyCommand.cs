@@ -1,10 +1,14 @@
+using AlgoDDD.SharedKernel;
+using StrategyType = AlgoDDD.Strategy.Domain.ValueObjects.StrategyType;
+using AlgoDDD.Strategy.Domain.Interfaces;
+using AlgoDDD.Strategy.Domain;
 using MediatR;
 using AlgoDDD.Strategy.Domain.Aggregates;
 using AlgoDDD.Strategy.Domain.ValueObjects;
 
 namespace AlgoDDD.Strategy.Application.Commands;
 
-public class CreateStrategyCommand : IRequest<Strategy>
+public class CreateStrategyCommand : IRequest<StrategyEntity>
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -17,7 +21,7 @@ public class CreateStrategyCommand : IRequest<Strategy>
     public decimal? TakeProfit { get; set; }
 }
 
-public class CreateStrategyCommandHandler : IRequestHandler<CreateStrategyCommand, Strategy>
+public class CreateStrategyCommandHandler : IRequestHandler<CreateStrategyCommand, StrategyEntity>
 {
     private readonly IStrategyRepository _repository;
 
@@ -26,9 +30,9 @@ public class CreateStrategyCommandHandler : IRequestHandler<CreateStrategyComman
         _repository = repository;
     }
 
-    public async Task<Strategy> Handle(CreateStrategyCommand request, CancellationToken cancellationToken)
+    public async Task<StrategyEntity> Handle(CreateStrategyCommand request, CancellationToken cancellationToken)
     {
-        var strategy = new Strategy(
+        var StrategyEntity = new StrategyEntity(
             request.Name,
             request.Description,
             request.Type,
@@ -37,6 +41,9 @@ public class CreateStrategyCommandHandler : IRequestHandler<CreateStrategyComman
             request.TimeFrame
         );
 
-        return await _repository.AddAsync(strategy);
+        return await _repository.AddAsync(StrategyEntity);
     }
 }
+
+
+

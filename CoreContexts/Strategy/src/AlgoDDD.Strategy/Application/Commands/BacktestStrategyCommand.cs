@@ -1,3 +1,6 @@
+using AlgoDDD.SharedKernel;
+using AlgoDDD.Strategy.Domain.Interfaces;
+using AlgoDDD.Strategy.Domain;
 using MediatR;
 using AlgoDDD.Strategy.Domain.Services;
 
@@ -26,15 +29,17 @@ public class BacktestStrategyCommandHandler : IRequestHandler<BacktestStrategyCo
 
     public async Task<BacktestResult> Handle(BacktestStrategyCommand request, CancellationToken cancellationToken)
     {
-        var strategy = await _repository.GetByIdAsync(request.StrategyId);
-        if (strategy == null)
-            throw new Exception($"Strategy {request.StrategyId} not found");
+        var StrategyEntity = await _repository.GetByIdAsync(request.StrategyId);
+        if (StrategyEntity == null)
+            throw new Exception($"StrategyEntity {request.StrategyId} not found");
 
         return await _strategyEngine.BacktestStrategyAsync(
-            strategy,
+            StrategyEntity,
             request.StartDate,
             request.EndDate,
             request.InitialCapital
         );
     }
 }
+
+

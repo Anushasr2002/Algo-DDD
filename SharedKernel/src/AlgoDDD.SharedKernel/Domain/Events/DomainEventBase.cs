@@ -1,4 +1,6 @@
-﻿namespace AlgoDDD.SharedKernel.Domain.Events;
+﻿using System;
+
+namespace AlgoDDD.SharedKernel.Domain.Events;
 
 public abstract class DomainEventBase : IDomainEvent
 {

@@ -1,3 +1,6 @@
+using AlgoDDD.SharedKernel;
+using AlgoDDD.Strategy.Domain.Interfaces;
+using AlgoDDD.Strategy.Domain;
 using MediatR;
 using AlgoDDD.Strategy.Domain.Entities;
 using AlgoDDD.Strategy.Domain.Services;
@@ -24,10 +27,12 @@ public class ExecuteStrategyCommandHandler : IRequestHandler<ExecuteStrategyComm
 
     public async Task<List<Signal>> Handle(ExecuteStrategyCommand request, CancellationToken cancellationToken)
     {
-        var strategy = await _repository.GetByIdAsync(request.StrategyId);
-        if (strategy == null)
-            throw new Exception($"Strategy {request.StrategyId} not found");
+        var StrategyEntity = await _repository.GetByIdAsync(request.StrategyId);
+        if (StrategyEntity == null)
+            throw new Exception($"StrategyEntity {request.StrategyId} not found");
 
-        return await _strategyEngine.ExecuteStrategyAsync(strategy);
+        return await _strategyEngine.ExecuteStrategyAsync(StrategyEntity);
     }
 }
+
+

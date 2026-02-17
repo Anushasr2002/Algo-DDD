@@ -5,9 +5,9 @@ namespace AlgoDDD.MarketData.Domain.Interfaces;
 
 public interface IMarketDataRepository
 {
-    Task<MarketData?> GetLatestBySymbolAsync(StockSymbol symbol);
-    Task<IEnumerable<MarketData>> GetHistoryBySymbolAsync(StockSymbol symbol, DateTime from, DateTime to);
-    Task AddAsync(MarketData marketData);
-    Task UpdateAsync(MarketData marketData);
+    Task<StockData?> GetLatestBySymbolAsync(StockSymbol symbol);
+    Task<IEnumerable<StockData>> GetHistoryBySymbolAsync(StockSymbol symbol, DateTime from, DateTime to);
+    Task AddAsync(StockData marketData);
+    Task UpdateAsync(StockData marketData);
     Task DeleteAsync(string id);
 }

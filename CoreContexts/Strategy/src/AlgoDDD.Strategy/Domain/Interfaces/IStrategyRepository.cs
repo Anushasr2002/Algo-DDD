@@ -1,16 +1,18 @@
-using AlgoDDD.Strategy.Domain.Aggregates;
-using AlgoDDD.Strategy.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AlgoDDD.Strategy.Domain;
 
-namespace AlgoDDD.Strategy.Domain.Interfaces;
-
-public interface IStrategyRepository
+namespace AlgoDDD.Strategy.Domain.Interfaces
 {
-    Task<Strategy?> GetByIdAsync(string id);
-    Task<IEnumerable<Strategy>> GetAllAsync();
-    Task<IEnumerable<Strategy>> GetActiveStrategiesAsync();
-    Task<Strategy> AddAsync(Strategy strategy);
-    Task UpdateAsync(Strategy strategy);
-    Task DeleteAsync(string id);
-    Task AddSignalAsync(Signal signal);
-    Task<IEnumerable<Signal>> GetSignalsAsync(string strategyId, DateTime? from = null, DateTime? to = null);
+    public interface IStrategyRepository
+    {
+        Task<StrategyEntity> GetByIdAsync(Guid id);
+        Task<IEnumerable<StrategyEntity>> GetAllAsync();
+        Task<IEnumerable<StrategyEntity>> GetActiveAsync();
+        Task AddAsync(StrategyEntity strategy);
+        Task UpdateAsync(StrategyEntity strategy);
+        Task DeleteAsync(Guid id);
+        Task<bool> ExistsAsync(Guid id);
+    }
 }

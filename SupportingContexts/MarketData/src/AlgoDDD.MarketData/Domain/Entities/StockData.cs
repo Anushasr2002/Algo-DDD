@@ -1,9 +1,9 @@
-using AlgoDDD.MarketData.Domain.ValueObjects;
 using AlgoDDD.SharedKernel.Domain.BaseClasses;
+using AlgoDDD.MarketData.Domain.ValueObjects;
 
 namespace AlgoDDD.MarketData.Domain.Entities;
 
-public class MarketData : Entity
+public class StockData : Entity<string>
 {
     public StockSymbol Symbol { get; private set; }
     public Price CurrentPrice { get; private set; }
@@ -14,23 +14,29 @@ public class MarketData : Entity
     public DateTime Timestamp { get; private set; }
     public DateTime LastUpdated { get; private set; }
 
-    private MarketData() { } // For EF Core
+    private StockData() : base(string.Empty) 
+    {
+        Symbol = null!;
+        CurrentPrice = null!;
+        OpenPrice = null!;
+        HighPrice = null!;
+        LowPrice = null!;
+    } // For EF Core
 
-    public MarketData(
+    public StockData(
         StockSymbol symbol, 
         Price currentPrice, 
         Price openPrice,
         Price highPrice,
         Price lowPrice,
         long volume,
-        DateTime timestamp)
+        DateTime timestamp) : base(Guid.NewGuid().ToString())
     {
-        Id = Guid.NewGuid().ToString();
-        Symbol = symbol;
-        CurrentPrice = currentPrice;
-        OpenPrice = openPrice;
-        HighPrice = highPrice;
-        LowPrice = lowPrice;
+        Symbol = symbol ?? throw new ArgumentNullException(nameof(symbol));
+        CurrentPrice = currentPrice ?? throw new ArgumentNullException(nameof(currentPrice));
+        OpenPrice = openPrice ?? throw new ArgumentNullException(nameof(openPrice));
+        HighPrice = highPrice ?? throw new ArgumentNullException(nameof(highPrice));
+        LowPrice = lowPrice ?? throw new ArgumentNullException(nameof(lowPrice));
         Volume = volume;
         Timestamp = timestamp;
         LastUpdated = DateTime.UtcNow;
@@ -38,6 +44,7 @@ public class MarketData : Entity
 
     public void UpdatePrice(Price newPrice, long volume)
     {
+        if (newPrice == null) throw new ArgumentNullException(nameof(newPrice));
         if (newPrice.Currency != CurrentPrice.Currency)
             throw new InvalidOperationException("Currency mismatch");
 

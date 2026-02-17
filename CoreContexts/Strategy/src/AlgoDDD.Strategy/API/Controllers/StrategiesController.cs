@@ -72,3 +72,4 @@ public class BacktestRequest
     public DateTime EndDate { get; set; }
     public decimal InitialCapital { get; set; }
 }
+

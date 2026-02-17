@@ -5,6 +5,6 @@ namespace AlgoDDD.Strategy.Domain.Interfaces;
 
 public interface IMarketDataService
 {
-    Task<MarketData?> GetLatestMarketDataAsync(StockSymbol symbol);
-    Task<IEnumerable<MarketData>> GetHistoricalDataAsync(StockSymbol symbol, int days);
+    Task<StockData?> GetLatestMarketDataAsync(StockSymbol symbol);
+    Task<IEnumerable<StockData>> GetHistoricalDataAsync(StockSymbol symbol, int days);
 }

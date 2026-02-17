@@ -35,7 +35,7 @@ public class UpdateMarketDataCommandHandler : IRequestHandler<UpdateMarketDataCo
         
         if (existingData == null)
         {
-            var newData = new MarketData(
+            var newData = new StockData(
                 symbol,
                 new Price(request.CurrentPrice, request.Currency),
                 new Price(request.OpenPrice, request.Currency),

@@ -1,7 +1,10 @@
+using AlgoDDD.IdentityAccess.Application.Results;
+using LoginResult = AlgoDDD.IdentityAccess.Application.Results.LoginResult;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using AlgoDDD.IdentityAccess.Application.Commands;
 using System.Threading.Tasks;
+
 
 namespace AlgoDDD.IdentityAccess.API.Controllers
 {
@@ -43,3 +46,5 @@ namespace AlgoDDD.IdentityAccess.API.Controllers
         }
     }
 }
+
+

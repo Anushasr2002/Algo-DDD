@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AlgoDDD.MarketData.Domain.Entities;
@@ -25,12 +26,10 @@ public class StockDataService
         _httpClient.BaseAddress = new Uri(_config.BaseUrl);
     }
 
-    public async Task<MarketData?> GetStockQuoteAsync(string symbol, string exchange = "NASDAQ")
+    public async Task<StockData?> GetStockQuoteAsync(string symbol, string exchange = "NASDAQ")
     {
         try
         {
-            // Example using Alpha Vantage API
-            // You can replace with your preferred API (Yahoo Finance, IEX Cloud, etc.)
             var response = await _httpClient.GetAsync(
                 $"query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={_config.ApiKey}");
             
@@ -51,7 +50,7 @@ public class StockDataService
 
             var stockSymbol = new StockSymbol(symbol, exchange, "USD");
             
-            return new MarketData(
+            return new StockData(
                 stockSymbol,
                 new Price(ParseDecimal(data.GlobalQuote.Price), "USD"),
                 new Price(ParseDecimal(data.GlobalQuote.Open), "USD"),

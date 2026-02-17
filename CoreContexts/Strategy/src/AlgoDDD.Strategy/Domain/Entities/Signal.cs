@@ -4,7 +4,7 @@ using AlgoDDD.MarketData.Domain.ValueObjects;
 
 namespace AlgoDDD.Strategy.Domain.Entities;
 
-public class Signal : Entity
+public class Signal : Entity<string>
 {
     public StockSymbol Symbol { get; private set; }
     public SignalType Type { get; private set; }
@@ -17,18 +17,23 @@ public class Signal : Entity
     public decimal? Quantity { get; private set; }
     public decimal? ProfitLoss { get; private set; }
 
+    private Signal() : base(string.Empty) 
+    {
+        Symbol = null!;
+        Reason = null!;
+    }
+
     public Signal(
         StockSymbol symbol,
         SignalType type,
         decimal price,
         string reason,
-        DateTime generatedAt)
+        DateTime generatedAt) : base(Guid.NewGuid().ToString())
     {
-        Id = Guid.NewGuid().ToString();
-        Symbol = symbol;
+        Symbol = symbol ?? throw new ArgumentNullException(nameof(symbol));
         Type = type;
         Price = price;
-        Reason = reason;
+        Reason = reason ?? throw new ArgumentNullException(nameof(reason));
         GeneratedAt = generatedAt;
         IsExecuted = false;
     }
@@ -40,7 +45,6 @@ public class Signal : Entity
         ExecutedAt = DateTime.UtcNow;
         IsExecuted = true;
         
-        // Calculate P&L (simplified)
         if (Type == SignalType.Buy || Type == SignalType.StrongBuy)
         {
             ProfitLoss = (executionPrice - Price) * quantity;
@@ -56,7 +60,6 @@ public class Signal : Entity
         if (!IsExecuted || ExecutedAt == null)
             return;
 
-        // Update P&L based on closing price
         var quantity = Quantity ?? 0;
         if (Type == SignalType.Buy || Type == SignalType.StrongBuy)
         {

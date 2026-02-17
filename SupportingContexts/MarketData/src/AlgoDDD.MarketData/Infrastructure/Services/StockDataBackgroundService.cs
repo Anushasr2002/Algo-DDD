@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,11 +14,11 @@ public class StockDataBackgroundService : BackgroundService
     private readonly MarketDataConfig _config;
     private readonly List<string> _trackedSymbols = new()
     {
-        "AAPL", "MSFT", "GOOGL", "AMZN", "META",  // Tech
-        "JPM", "BAC", "WFC",                        // Banking
-        "JNJ", "PFE", "MRK",                         // Healthcare
-        "XOM", "CVX",                                 // Energy
-        "SPY", "QQQ"                                   // ETFs
+        "AAPL", "MSFT", "GOOGL", "AMZN", "META",
+        "JPM", "BAC", "WFC",
+        "JNJ", "PFE", "MRK",
+        "XOM", "CVX",
+        "SPY", "QQQ"
     };
 
     public StockDataBackgroundService(
@@ -39,8 +40,6 @@ public class StockDataBackgroundService : BackgroundService
             try
             {
                 await UpdateStockData(stoppingToken);
-                
-                // Wait for next update interval (e.g., 1 minute for real-time, 5 minutes for regular updates)
                 await Task.Delay(TimeSpan.FromMinutes(_config.CacheDurationMinutes), stoppingToken);
             }
             catch (Exception ex)
@@ -63,12 +62,12 @@ public class StockDataBackgroundService : BackgroundService
         {
             try
             {
-                var marketData = await stockDataService.GetStockQuoteAsync(symbol);
-                if (marketData != null)
+                var stockData = await stockDataService.GetStockQuoteAsync(symbol);
+                if (stockData != null)
                 {
-                    await repository.AddAsync(marketData);
+                    await repository.AddAsync(stockData);
                     _logger.LogDebug("Updated data for {Symbol}: , Volume: {Volume:N0}", 
-                        symbol, marketData.CurrentPrice.Value, marketData.Volume);
+                        symbol, stockData.CurrentPrice.Value, stockData.Volume);
                 }
             }
             catch (Exception ex)
@@ -80,3 +79,4 @@ public class StockDataBackgroundService : BackgroundService
         await Task.WhenAll(tasks);
     }
 }
+
