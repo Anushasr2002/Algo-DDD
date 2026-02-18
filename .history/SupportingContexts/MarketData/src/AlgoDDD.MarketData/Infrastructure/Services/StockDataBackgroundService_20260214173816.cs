@@ -66,14 +66,8 @@ public class StockDataBackgroundService : BackgroundService
                 if (stockData != null)
                 {
                     await repository.AddAsync(stockData);
-
-                    // FIXED: placeholders now match arguments
-                    _logger.LogDebug(
-                        "Updated data for {Symbol}: Price: {Price}, Volume: {Volume:N0}",
-                        symbol,
-                        stockData.CurrentPrice.Value,
-                        stockData.Volume
-                    );
+                    _logger.LogDebug("Updated data for {Symbol}: , Volume: {Volume:N0}", 
+                        symbol, stockData.CurrentPrice.Value, stockData.Volume);
                 }
             }
             catch (Exception ex)
@@ -85,3 +79,4 @@ public class StockDataBackgroundService : BackgroundService
         await Task.WhenAll(tasks);
     }
 }
+

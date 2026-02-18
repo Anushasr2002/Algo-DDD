@@ -1,17 +1,18 @@
-// Explicit alias to resolve ambiguity
-using StrategyType = AlgoDDD.Strategy.Domain.ValueObjects.StrategyType;
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AlgoDDD.Strategy.Domain.Entities;
+using AlgoDDD.SharedKernel;
 using AlgoDDD.Strategy.Domain.Interfaces;
+using AlgoDDD.Strategy.Domain.Aggregates;
 using AlgoDDD.Strategy.Domain.ValueObjects;
 using MediatR;
 
 namespace AlgoDDD.Strategy.Application.Commands
 {
+    /// <summary>
+    /// Command to create a new trading strategy.
+    /// </summary>
     public class CreateStrategyCommand : IRequest<StrategyEntity>
     {
         public string Name { get; set; } = string.Empty;
@@ -25,6 +26,9 @@ namespace AlgoDDD.Strategy.Application.Commands
         public decimal? TakeProfit { get; set; }
     }
 
+    /// <summary>
+    /// Handles creation of a new strategy and persists it via repository.
+    /// </summary>
     public class CreateStrategyCommandHandler : IRequestHandler<CreateStrategyCommand, StrategyEntity>
     {
         private readonly IStrategyRepository _repository;
@@ -39,7 +43,7 @@ namespace AlgoDDD.Strategy.Application.Commands
             var strategyEntity = new StrategyEntity(
                 Guid.NewGuid(),
                 request.Name,
-                request.Type,          // ✅ Pass value object directly
+                request.Type,
                 request.Description,
                 request.Parameters,
                 request.Symbols,

@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlgoDDD.MarketData.Domain.Entities;
-using AlgoDDD.Strategy.Domain.Entities;
+using AlgoDDD.Strategy.Domain;
 
 namespace AlgoDDD.Strategy.Domain.Services
 {
     /// <summary>
-    /// StrategyEngine orchestrates the execution of trading strategies.
-    /// It fetches market data, computes indicators, and delegates signal evaluation
-    /// to the StrategyEntity based on the configured strategy type.
+    /// Central engine for executing trading strategies.
+    /// Fetches market data, computes indicators, and delegates to StrategyEntity.
     /// </summary>
     public class StrategyEngine
     {
@@ -20,44 +19,35 @@ namespace AlgoDDD.Strategy.Domain.Services
             _marketDataProvider = marketDataProvider;
         }
 
+        /// <summary>
+        /// Executes a strategy against the latest market data.
+        /// </summary>
         public async Task<List<Signal>> ExecuteStrategyAsync(StrategyEntity strategyEntity)
         {
             var signals = new List<Signal>();
 
+            // Example: fetch last N bars for the symbol(s)
             foreach (var symbol in strategyEntity.Symbols)
             {
                 var bars = await _marketDataProvider.GetHistoricalBarsAsync(symbol, 50);
-                var latestBar = bars[^1];
 
+                // Compute indicators depending on strategy type
                 switch (strategyEntity.StrategyType)
                 {
                     case "SMA":
                         var shortMA = ComputeSMA(bars, 10);
                         var longMA = ComputeSMA(bars, 30);
-                        signals.Add(strategyEntity.Evaluate(latestBar, shortMA: shortMA, longMA: longMA));
+                        signals.Add(strategyEntity.Evaluate(bars[^1], shortMA, longMA));
                         break;
 
                     case "MeanReversion":
                         var mean = ComputeMean(bars);
                         var threshold = ComputeStdDev(bars);
-                        signals.Add(strategyEntity.Evaluate(latestBar, mean: mean, threshold: threshold));
+                        signals.Add(strategyEntity.Evaluate(bars[^1], mean: mean, threshold: threshold));
                         break;
 
                     case "Momentum":
-                        signals.Add(strategyEntity.Evaluate(latestBar));
-                        break;
-
-                    case "BollingerBands":
-                        var bbMean = ComputeSMA(bars, 20);
-                        var bbStdDev = ComputeStdDev(bars);
-                        var upperBand = bbMean + 2 * bbStdDev;
-                        var lowerBand = bbMean - 2 * bbStdDev;
-                        signals.Add(strategyEntity.Evaluate(latestBar, upperBand: upperBand, lowerBand: lowerBand));
-                        break;
-
-                    case "RSI":
-                        var rsi = ComputeRSI(bars, 14);
-                        signals.Add(strategyEntity.Evaluate(latestBar, rsi: rsi));
+                        signals.Add(strategyEntity.Evaluate(bars[^1]));
                         break;
 
                     default:
@@ -92,31 +82,6 @@ namespace AlgoDDD.Strategy.Domain.Services
             foreach (var bar in bars)
                 variance += (bar.Close - mean) * (bar.Close - mean);
             return (decimal)Math.Sqrt((double)(variance / bars.Count));
-        }
-
-        /// <summary>
-        /// Computes the Relative Strength Index (RSI) for the given period.
-        /// RSI = 100 - (100 / (1 + RS)), where RS = AvgGain / AvgLoss.
-        /// </summary>
-        private decimal ComputeRSI(List<PriceBar> bars, int period)
-        {
-            if (bars.Count < period + 1) return 50; // neutral fallback
-
-            decimal gains = 0, losses = 0;
-            for (int i = bars.Count - period; i < bars.Count; i++)
-            {
-                var change = bars[i].Close - bars[i - 1].Close;
-                if (change > 0) gains += change;
-                else losses -= change; // losses are positive
-            }
-
-            decimal avgGain = gains / period;
-            decimal avgLoss = losses / period;
-
-            if (avgLoss == 0) return 100; // extreme overbought
-            var rs = avgGain / avgLoss;
-            var rsi = 100 - (100 / (1 + rs));
-            return rsi;
         }
     }
 }
