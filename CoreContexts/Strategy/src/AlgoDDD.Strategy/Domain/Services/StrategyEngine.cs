@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlgoDDD.MarketData.Domain.Entities;
 using AlgoDDD.Strategy.Domain.Entities;
+using AlgoDDD.Strategy.Domain.ValueObjects;
 
 namespace AlgoDDD.Strategy.Domain.Services
 {
     /// <summary>
-    /// StrategyEngine orchestrates the execution of trading strategies.
+    /// StrategyEngine orchestrates execution and backtesting of trading strategies.
     /// It fetches market data, computes indicators, and delegates signal evaluation
     /// to the StrategyEntity based on the configured strategy type.
     /// </summary>
@@ -17,9 +19,13 @@ namespace AlgoDDD.Strategy.Domain.Services
 
         public StrategyEngine(IMarketDataProvider marketDataProvider)
         {
-            _marketDataProvider = marketDataProvider;
+            _marketDataProvider = marketDataProvider 
+                ?? throw new ArgumentNullException(nameof(marketDataProvider));
         }
 
+        /// <summary>
+        /// Executes a strategy live and produces signals for each symbol.
+        /// </summary>
         public async Task<List<Signal>> ExecuteStrategyAsync(StrategyEntity strategyEntity)
         {
             var signals = new List<Signal>();
@@ -61,7 +67,7 @@ namespace AlgoDDD.Strategy.Domain.Services
                         break;
 
                     default:
-                        signals.Add(new Signal(SignalType.Hold, DateTime.UtcNow));
+                        signals.Add(new Signal(strategyEntity.Id, symbol, SignalType.Hold, latestBar.Close, "Default Hold", DateTime.UtcNow));
                         break;
                 }
             }
@@ -69,6 +75,23 @@ namespace AlgoDDD.Strategy.Domain.Services
             return signals;
         }
 
+        /// <summary>
+        /// Runs a backtest for the given strategy between two dates.
+        /// </summary>
+        public async Task<BacktestResult> RunBacktestAsync(
+            StrategyId strategyId,
+            DateTime from,
+            DateTime to)
+        {
+            var signals = await _marketDataProvider.GetSignalsAsync(strategyId, from, to);
+
+            int tradesExecuted = signals.Count(s => s.IsExecuted);
+            decimal profitLoss = signals.Sum(s => s.ProfitLoss ?? 0);
+
+            return new BacktestResult(strategyId, profitLoss, tradesExecuted);
+        }
+
+        // --- Indicator helpers ---
         private decimal ComputeSMA(List<PriceBar> bars, int period)
         {
             if (bars.Count < period) return 0;
@@ -80,24 +103,17 @@ namespace AlgoDDD.Strategy.Domain.Services
 
         private decimal ComputeMean(List<PriceBar> bars)
         {
-            decimal sum = 0;
-            foreach (var bar in bars) sum += bar.Close;
-            return sum / bars.Count;
+            decimal sum = bars.Sum(b => b.Close);
+            return bars.Count == 0 ? 0 : sum / bars.Count;
         }
 
         private decimal ComputeStdDev(List<PriceBar> bars)
         {
             var mean = ComputeMean(bars);
-            decimal variance = 0;
-            foreach (var bar in bars)
-                variance += (bar.Close - mean) * (bar.Close - mean);
-            return (decimal)Math.Sqrt((double)(variance / bars.Count));
+            decimal variance = bars.Sum(b => (b.Close - mean) * (b.Close - mean));
+            return bars.Count == 0 ? 0 : (decimal)Math.Sqrt((double)(variance / bars.Count));
         }
 
-        /// <summary>
-        /// Computes the Relative Strength Index (RSI) for the given period.
-        /// RSI = 100 - (100 / (1 + RS)), where RS = AvgGain / AvgLoss.
-        /// </summary>
         private decimal ComputeRSI(List<PriceBar> bars, int period)
         {
             if (bars.Count < period + 1) return 50; // neutral fallback
@@ -115,8 +131,7 @@ namespace AlgoDDD.Strategy.Domain.Services
 
             if (avgLoss == 0) return 100; // extreme overbought
             var rs = avgGain / avgLoss;
-            var rsi = 100 - (100 / (1 + rs));
-            return rsi;
+            return 100 - (100 / (1 + rs));
         }
     }
 }

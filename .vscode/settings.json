@@ -1,0 +1,7 @@
+{
+    "chat.editor.fontFamily": "10",
+    "editor.inlayHints.fontFamily": "10",
+    "scm.inputFontFamily": "10",
+    "terminal.integrated.fontFamily": "10",
+    "notebook.output.fontFamily": "10"
+}
