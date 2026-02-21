@@ -3,5 +3,7 @@
     "editor.inlayHints.fontFamily": "10",
     "scm.inputFontFamily": "10",
     "terminal.integrated.fontFamily": "10",
-    "notebook.output.fontFamily": "10"
+    "notebook.output.fontFamily": "10",
+    "editor.fontSize": 11,
+    "editor.codeLensFontSize": 10
 }

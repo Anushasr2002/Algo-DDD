@@ -3,7 +3,6 @@ using AlgoDDD.Strategy.Domain.Interfaces;
 using AlgoDDD.Strategy.Domain;
 using MediatR;
 using AlgoDDD.Strategy.Domain.Services;
-using AlgoDDD.Strategy.Domain.Entities;
 
 namespace AlgoDDD.Strategy.Application.Commands;
 
