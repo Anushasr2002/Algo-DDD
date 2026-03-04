@@ -1,0 +1,1 @@
+CoreContexts/Strategy/src/AlgoDDD.Strategy/Domain/Entities/Bar.cs

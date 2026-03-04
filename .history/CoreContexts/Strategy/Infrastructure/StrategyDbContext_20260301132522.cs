@@ -1,0 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using AlgoDDD.Strategy.Domain.Entities;
+using AlgoDDD.Strategy.Domain.ValueObjects;
+
+namespace AlgoDDD.Strategy.Infrastructure
+{
+    public class StrategyDbContext : DbContext
+    {
+        public StrategyDbContext(DbContextOptions<StrategyDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<StrategyEntity> Strategies { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Example: configure StrategyEntity
+            modelBuilder.Entity<StrategyEntity>(entity =>
+            {
+                // StrategyDbContext.cs modelBuilder.Entity<StrategyEntity>(entity => { entity.HasKey(e => e.Id); // Remove mappings for Name, Description, TimeFrame, etc. // Only map existing properties entity.Property(e => e.Type).IsRequired(); entity.Property(e => e.Symbols) .HasConversion( v => string.Join(",", v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() ); });
+        }
+    }
+}

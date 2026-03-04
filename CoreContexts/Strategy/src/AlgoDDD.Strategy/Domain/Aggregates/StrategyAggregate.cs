@@ -1,25 +1,38 @@
-﻿using AlgoDDD.Strategy.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using AlgoDDD.Strategy.Domain.Entities;
+using AlgoDDD.Strategy.Domain.ValueObjects;
 
 namespace AlgoDDD.Strategy.Domain.Aggregates
 {
-    /// <summary>
-    /// Aggregate root for managing a trading strategy and its signals.
-    /// </summary>
     public class StrategyAggregate
     {
-        public StrategyEntity Strategy { get; private set; }
-        private readonly List<Signal> _signals = new();
+        public StrategyId Id { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Type { get; private set; }
+        public string TimeFrame { get; private set; }
+        public decimal MaxPositionSize { get; private set; }
+        public decimal StopLoss { get; private set; }
+        public decimal TakeProfit { get; private set; }
 
-        public StrategyAggregate(StrategyEntity strategy)
+        private readonly List<string> _signals = new();
+        public IReadOnlyCollection<string> Signals => _signals.AsReadOnly();
+
+        public StrategyAggregate(StrategyId id, string name, string type, string timeFrame)
         {
-            Strategy = strategy;
+            Id = id;
+            Name = name;
+            Type = type;
+            TimeFrame = timeFrame;
         }
 
-        public void AddSignal(Signal signal)
+        public void UpdateSignal(string newSignal)
         {
-            _signals.Add(signal);
-        }
+            if (string.IsNullOrWhiteSpace(newSignal))
+                throw new ArgumentException("Signal cannot be empty.", nameof(newSignal));
 
-        public IReadOnlyCollection<Signal> Signals => _signals.AsReadOnly();
+            _signals.Add(newSignal);
+        }
     }
 }

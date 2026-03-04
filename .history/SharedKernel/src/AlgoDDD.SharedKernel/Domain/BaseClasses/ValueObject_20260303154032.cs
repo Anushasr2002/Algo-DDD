@@ -1,0 +1,36 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AlgoDDD.SharedKernel.Domain.BaseClasses
+{
+    public abstract class ValueObject
+    {
+        protected abstract IEnumerable<object> GetEqualityComponents();
+
+        public override bool Equals(object? obj)  // Add ? to fix nullability warning
+        {
+            if (obj == null || obj.GetType() != GetType())
+                return false;
+
+            var other = (ValueObject)obj;
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+        }
+
+        public override int GetHashCode()
+        {
+            return GetEqualityComponents()
+                .Select(x => x?.GetHashCode() ?? 0)
+                .Aggregate((x, y) => x ^ y);
+        }
+
+        public static bool operator ==(ValueObject? left, ValueObject? right)  // Add ? to fix nullability
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(ValueObject? left, ValueObject? right)  // Add ? to fix nullability
+        {
+            return !Equals(left, right);
+        }
+    }
+}

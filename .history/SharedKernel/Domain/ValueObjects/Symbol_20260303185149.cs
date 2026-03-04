@@ -1,0 +1,25 @@
+using AlgoDDD.SharedKernel.Domain.BaseClasses;
+using System.Collections.Generic;
+
+namespace AlgoDDD.SharedKernel.Domain.ValueObjects
+{
+    public class Symbol : ValueObject
+    {
+        public string Value { get; }
+
+        public Symbol(string value)
+        {
+            Value = value.ToUpperInvariant();
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+
+        public override string ToString() => Value;
+        
+        public static implicit operator string(Symbol symbol) => symbol.Value;
+        public static explicit operator Symbol(string value) => new Symbol(value);
+    }
+}

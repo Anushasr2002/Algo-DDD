@@ -2,10 +2,10 @@ namespace AlgoDDD.IdentityAccess.Application.Results
 {
     public class RegisterResult
     {
+        public required string UserId { get; set; }
+        public required string Email { get; set; }
+        public required string ErrorMessage { get; set; }
         public bool Success { get; set; }
-        public string UserId { get; set; }
-        public string Email { get; set; }
-        public string ErrorMessage { get; set; }
 
         public static RegisterResult Successful(string userId, string email)
         {
@@ -13,7 +13,8 @@ namespace AlgoDDD.IdentityAccess.Application.Results
             {
                 Success = true,
                 UserId = userId,
-                Email = email
+                Email = email,
+                ErrorMessage = string.Empty // ✅ required property set
             };
         }
 
@@ -22,6 +23,8 @@ namespace AlgoDDD.IdentityAccess.Application.Results
             return new RegisterResult
             {
                 Success = false,
+                UserId = string.Empty,      // ✅ required property set
+                Email = string.Empty,       // ✅ required property set
                 ErrorMessage = errorMessage
             };
         }

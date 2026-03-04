@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "StrategyDb": "Host=localhost;Database=AlgoDDD_Strategy;Username=postgres;Password=yourpassword"
+  }
+}

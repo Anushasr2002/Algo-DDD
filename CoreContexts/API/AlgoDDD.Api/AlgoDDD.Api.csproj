@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- ASP.NET Core packages -->
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+
+        <!-- EF Core + PostgreSQL -->
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
+
+        <!-- MediatR for CQRS/Commands -->
+        <PackageReference Include="MediatR" Version="11.1.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection"
+            Version="11.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Reference to Strategy project -->
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\AlgoDDD.Strategy.Domain.csproj" />
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Infrastructure\AlgoDDD.Strategy.Infrastructure.csproj" />
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\AlgoDDD.Strategy.Application.csproj" />
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\AlgoDDD.Strategy.Application.csproj" />
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\AlgoDDD.Strategy.Domain.csproj" />
+        <ProjectReference
+            Include="..\..\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Infrastructure\AlgoDDD.Strategy.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

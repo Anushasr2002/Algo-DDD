@@ -1,0 +1,29 @@
+
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Class1.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Program.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Commands\BacktestStrategyCommand.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Commands\CreateStrategyCommand.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Commands\ExecuteStrategyCommand.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Application\Handlers\UpdateSignalHandler.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Infrastructure\StrategyDbContext.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Infrastructure\Repository\StrategyRepository.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDD.Strategy.Infrastructure\Services\TechnicalAnalysisService.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\obj\Debug\net8.0\AlgoDDD.Strategy.Application.AssemblyInfo.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\obj\Debug\net8.0\AlgoDDD.Strategy.Application.AssemblyInfo.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\obj\Debug\net8.0\AlgoDDD.Strategy.Application.GlobalUsings.g.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Application\obj\Debug\net8.0\AlgoDDD.Strategy.Application.GlobalUsings.g.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\obj\Debug\net8.0\AlgoDDD.Strategy.Domain.AssemblyInfo.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\obj\Debug\net8.0\AlgoDDD.Strategy.Domain.AssemblyInfo.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\obj\Debug\net8.0\AlgoDDD.Strategy.Domain.GlobalUsings.g.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\AlgoDDD.Strategy.Domain\obj\Debug\net8.0\AlgoDDD.Strategy.Domain.GlobalUsings.g.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\Domain\Aggregates\StrategyAggregate.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\Domain\Entities\Signal.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\Domain\Entities\StrategyEntity.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\Domain\Interfaces\IstrategyRepository.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\Domain\Services\StrategyEngine.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\AlgoDDD.Strategy.AssemblyInfo.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\AlgoDDD.Strategy.AssemblyInfo.cs
+First code line is not a namespace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\AlgoDDD.Strategy.GlobalUsings.g.cs
+File does not end with a closing brace in: C:\Algo-DDD\CoreContexts\Strategy\src\AlgoDDD.Strategy\obj\Debug\net8.0\AlgoDDD.Strategy.GlobalUsings.g.cs
